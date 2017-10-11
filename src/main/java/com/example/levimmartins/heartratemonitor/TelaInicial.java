@@ -32,10 +32,16 @@ public class TelaInicial extends AppCompatActivity {
 
     public void onConquistas(View view){
 
-        Intent openConquistas = new Intent(this, Conquistas.class);
-       // openConquistas.putExtra("EXTRA_SESSION_PONTOS",backgroundWorker.global_user.toString());
-        openConquistas.putExtra("EXTRA_SESSION_ID", user_name);
-        this.startActivity(openConquistas);
+
+
+        String type = "pontos";
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.execute(type,user_name);
+
+       // Intent openConquistas = new Intent(this, Conquistas.class);
+        //openConquistas.putExtra("EXTRA_SESSION_PONTOS",backgroundWorker.global_user.toString());
+       // openConquistas.putExtra("EXTRA_SESSION_ID", user_name);
+       // this.startActivity(openConquistas);
 
     }
 

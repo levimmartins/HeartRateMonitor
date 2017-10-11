@@ -28,7 +28,25 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
     Context context;
     AlertDialog alertDialog;
     String global_user;
-    String globalPontos = new String();
+    String globalPontos;
+
+    public String getGlobal_user() {
+        return global_user;
+    }
+
+    public void setGlobal_user(String global_user) {
+        this.global_user = global_user;
+    }
+
+    public String getGlobalPontos() {
+        return globalPontos;
+    }
+
+    public void setGlobalPontos(String globalPontos) {
+        this.globalPontos = globalPontos;
+    }
+
+
 
     BackgroundWorker (Context ctx){
         context = ctx;
@@ -124,9 +142,7 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
                 e.printStackTrace();
             }
 
-        }
-
-        if(type.equals("pontos")){
+        }else if(type.equals("pontos")){
             try{
                 String user_name = params[1];
 
@@ -153,6 +169,15 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
                 while((line = bufferedReader.readLine() )!= null){
                     result+=line;
                 }
+                this.setGlobalPontos(result);
+
+
+                Intent openConquistas = new Intent(this.context, Conquistas.class);
+                openConquistas.putExtra("EXTRA_SESSION_PONTOS",this.getGlobalPontos());
+                // openConquistas.putExtra("EXTRA_SESSION_ID", this.getGlobal_user());
+                context.startActivity(openConquistas);
+
+
 
                 bufferedReader.close();
                 inputStream.close();
@@ -165,9 +190,7 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
                 e.printStackTrace();
             }
 
-        }
-
-        if(type.equals("pontuar")){
+        }else if(type.equals("pontuar")){
             try {
 
                 String user_name = params[1];
@@ -244,11 +267,12 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
         }
 
         if(result.contains("Pontos:")) {
-            //System.out.println("***************************************************");
-            //System.out.println(result);
             Intent openConquistas = new Intent(this.context, Conquistas.class);
             openConquistas.putExtra("EXTRA_SESSION_PONTOS",result);
-            context.startActivity(openConquistas);
+           // openConquistas.putExtra("EXTRA_SESSION_ID", this.getGlobal_user());
+             context.startActivity(openConquistas);
+
+
         }
 
 
