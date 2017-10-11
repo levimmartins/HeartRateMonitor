@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">HeartRateMonitor</string>
+    <string name="action_settings">Configurações</string>
+    <string name="action_list">Listar Dados</string>
+
+    <string name="usuario">Usuário</string>
+    <string name="senha">Senha</string>
+    <string name="login">Entrar</string>
+    <string name="title_activity_dicas_pop_up">DicasPopUp</string>
+
+
+</resources>

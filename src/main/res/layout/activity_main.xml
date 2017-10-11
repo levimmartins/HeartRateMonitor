@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.levimmartins.heartratemonitor.TelaCadastro">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nome:"
+        android:id="@+id/tvNome"
+        android:textSize="24sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="19dp"
+        android:id="@+id/editIdade"
+        android:layout_below="@+id/editNome"
+        android:layout_alignLeft="@+id/editNome"
+        android:layout_alignStart="@+id/editNome" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="32dp"
+        android:id="@+id/editEmail"
+        android:layout_below="@+id/editIdade"
+        android:layout_alignLeft="@+id/editIdade"
+        android:layout_alignStart="@+id/editIdade" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editNome"
+        android:layout_marginLeft="26dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Idade:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editNome"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tvIdade"
+        android:textSize="24sp" />
+
+    <TextView
+        android:text="Email:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvEmail"
+        android:textSize="24sp"
+        android:layout_below="@+id/editIdade"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnCadastrar"
+        android:layout_alignLeft="@+id/editSenha"
+        android:layout_alignStart="@+id/editSenha"
+        android:layout_marginTop="41dp"
+        android:id="@+id/tvMensagem1"
+        android:textSize="24sp" />
+
+    <Button
+        android:text="Cadastrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:id="@+id/btnCadastrar"
+        android:onClick="SaveData"
+        android:layout_below="@+id/editSenha"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Senha:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSenha"
+        android:textSize="24sp"
+        android:layout_below="@+id/editEmail"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_marginTop="66dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editSenha"
+        android:layout_below="@+id/tvSenha"
+        android:layout_alignLeft="@+id/editEmailCuidador"
+        android:layout_alignStart="@+id/editEmailCuidador" />
+
+    <TextView
+        android:text="Email do Cuidador:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvEmailCuidador"
+        android:textSize="24sp"
+        android:layout_below="@+id/editEmail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/tvEmailCuidador"
+        android:layout_alignLeft="@+id/editEmail"
+        android:layout_alignStart="@+id/editEmail"
+        android:id="@+id/editEmailCuidador" />
+</RelativeLayout>
