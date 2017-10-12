@@ -12,7 +12,13 @@ Sponsor:  [Fundação de Amparo à Pesquisa e Desenvolvimento Científico do Mar
 ![Alt Text](https://github.com/levimmartins/HeartRateMonitor/blob/master/src/giphy/screens.gif)
 
 ## Entity Relationship Diagram
-![alt text](https://github.com/levimmartins/HeartRateMonitor/blob/master/modelBD/mr.png)
+![alt text](https://github.com/levimmartins/HeartRateMonitor/blob/master/src/modelBD/mr.png)
 
 ## License
 This project is licensed under the GNU General Public License v2.0 - see the [LICENSE](LICENSE) file for details
+
+
+
+Icons made by Freepi from www.flaticon.com is licensed by Creative Commons BY 3.0" CC 3.0;
+
+Free Sound Effects provided by PacDV http://www.pacdv.com/sounds/
