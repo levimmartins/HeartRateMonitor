@@ -9,7 +9,7 @@ Sponsor:  [Fundação de Amparo à Pesquisa e Desenvolvimento Científico do Mar
 * **Levi M. Martins**
 
 ## Screens
-![Alt Text](https://github.com/levimmartins/HeartRateMonitor/app/src/giphy/screens.gif)
+![Alt Text](https://github.com/levimmartins/HeartRateMonitor/blob/master/src/giphy/screens.gif)
 
 ## Entity Relationship Diagram
 ![alt text](https://github.com/levimmartins/HeartRateMonitor/blob/master/modelBD/mr.png)
