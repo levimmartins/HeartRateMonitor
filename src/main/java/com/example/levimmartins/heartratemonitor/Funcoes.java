@@ -1,6 +1,8 @@
 package com.example.levimmartins.heartratemonitor;
 
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -45,7 +47,7 @@ public class Funcoes {
     private static List<Float> ybeat = null;
     private static List<Double> RR_list = null;
     private static List<Double> bpm = null;
-
+    private static Integer iterator=0;
     //public static void main(String[] args) {
 
       //  Funcoes fn = new Funcoes();
@@ -62,6 +64,7 @@ public class Funcoes {
 
    // }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void getData(String filename) {
         String csvFile = filename;
         String line = "";
@@ -86,14 +89,11 @@ public class Funcoes {
         }
 
         SensorValuesList = new ArrayList<String>(Arrays.asList((sb.toString().split("\n"))));
-        SensorValuesList.remove(0); //Remove  the header 'hart' (first line of the file)
+
 
     }
 
-    public static void process(List dataset, double hrw, double fs) {
-        //rollmean
 
-    }
 
     public static void rolling_mean(List<String> dataset, double hrw, double fs) {
 
@@ -213,6 +213,26 @@ public class Funcoes {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void process(double hrw, double fs) {
+
+
+
+
+        this.getData(this.FILENAME);
+        if(iterator<1){
+            SensorValuesList.remove(0); //Remove  the header 'hart' (first line of the file)
+            iterator = 1;
+        }
+
+        rolling_mean(SensorValuesList, hrw, fs);
+        detect_peaks(SensorValuesList);
+        calc_rr(fs);
+        calc_bpm();
+
+    }
+
+
     public static List<Double> getBpm() {
         return bpm;
     }
@@ -228,4 +248,6 @@ public class Funcoes {
     public static void setSensorValuesList(List<String> sensorValuesList) {
         SensorValuesList = sensorValuesList;
     }
+
+
 }

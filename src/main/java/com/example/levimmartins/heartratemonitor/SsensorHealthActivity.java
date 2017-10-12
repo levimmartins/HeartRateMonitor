@@ -3,16 +3,21 @@ package com.example.levimmartins.heartratemonitor;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Vibrator;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.samsung.android.sdk.SsdkUnsupportedException;
@@ -27,19 +32,20 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class SsensorHealthActivity extends Activity {
 
     Ssensor ir=null;
     Ssensor red=null;
     private String id;
-    //ToggleButton btn_start = null;
     ToggleButton btn_start = null;
 
     TextView tIR = null;
     TextView tRED = null;
+    ImageView imViewPulse = null;
 
-    SSListenerIR mSSListenerIR = null;
+    //SSListenerIR mSSListenerIR = null;
     SSListenerRED mSSListenerRED = null;
 
     SsensorManager mSSensorManager = null;
@@ -52,9 +58,13 @@ public class SsensorHealthActivity extends Activity {
     File namefile;
     BufferedWriter out;
     StringBuffer sbDadosSensor;
-
-
+    String name;
+    Funcoes funcoes;
     WriteFile Arquivo;
+    Vibrator v;
+    private boolean mAllowVibrate = false;
+    private boolean mAllowCalculating = false;
+    private ImageView imageView2;
 
     @TargetApi(23) @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -65,206 +75,30 @@ public class SsensorHealthActivity extends Activity {
 
         sdcard = Environment.getExternalStorageDirectory().getPath();
 
-        //btn_start.setText("Iniciar");
+
         this.id =  getIntent().getStringExtra("EXTRA_SESSION_ID");
-        System.out.println("=======USER EMAIL SESSION ID ========"+this.id);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_segunda);
 
         sbDadosSensor = new StringBuffer();
         btn_start = (ToggleButton)findViewById(R.id.btn_start);
-        tIR = (TextView) findViewById(R.id.tIR);
+        imageView2 = (ImageView)findViewById(R.id.imageView2);
+       // tIR = (TextView) findViewById(R.id.tIR);
         tRED = (TextView) findViewById(R.id.tRED);
 
-        mSSListenerIR = new SSListenerIR();
+
+        //mSSListenerIR = new SSListenerIR();
         mSSListenerRED = new SSListenerRED();
 
 
-        String name = sdcard+"/dadosSENSOR.txt";
+        name = sdcard+"/dadosSENSOR.txt";
 
         Arquivo = new WriteFile(name);
 
-       /* if(btn_start !=null){
+        funcoes = new Funcoes();
 
 
-
-
-            btn_start.setOnClickListener(new View.OnClickListener() {
-
-
-
-                        @Override
-                        public void onClick(View v) {
-                            btn_start.setSelected(!btn_start.isSelected());
-
-
-                           // String name = sdcard+"/dadosSENSOR.txt";
-                            //namefile = new File(name);
-                          //  try {
-                          //      out = new BufferedWriter(new FileWriter(namefile));
-                       //     } catch (IOException e) {
-                          //      e.printStackTrace();
-                         //   }
-
-
-
-
-                            try{
-                                if(!btn_start.isSelected()){
-                                    //HRM OFF
-                                    //btn_start.setText(btn_start.getTextOff());
-                                    btn_start.setText("Iniciar");
-                                    mSSensorManager.unregisterListener(mSSListenerIR, ir);
-                                    mSSensorManager.unregisterListener(mSSListenerRED, red);
-
-                                   // Arquivo.WriteWord("Teste:"+sbDadosSensor);
-                                   //Arquivo.CloseFile();
-
-
-                                }else{
-
-
-
-                                    mSsensorExtension = new SsensorExtension();
-
-                                    try{
-                                        mSsensorExtension.initialize(mContext);
-                                        mSSensorManager = new SsensorManager(mContext, mSsensorExtension);
-
-                                        ir = mSSensorManager.getDefaultSensor(Ssensor.TYPE_HRM_LED_IR);
-                                        red = mSSensorManager.getDefaultSensor(Ssensor.TYPE_HRM_LED_RED);
-
-                                    }catch(SsdkUnsupportedException e){
-                                        Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
-                                        mContext.finish();
-
-                                    }catch (IllegalArgumentException e){
-                                        Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        mContext.finish();
-                                    }catch (SecurityException e){
-                                        Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        mContext.finish();
-                                    }
-
-                                    //HRM ON
-
-                                    btn_start.setText(btn_start.getTextOn());
-                                    if(mSSensorManager != null){
-
-                                        mSSensorManager.registerListener(mSSListenerIR, ir, SensorManager.SENSOR_DELAY_NORMAL);
-                                        mSSensorManager.registerListener(mSSListenerRED, red, SensorManager.SENSOR_DELAY_NORMAL);
-                                    }
-                                }
-                            }catch (IllegalArgumentException e){
-                                    ErrorToast(e);
-                            }
-                        }
-                    });
-
-                    if (android.os.Build.VERSION.SDK_INT >=23){
-                            if(checkSelfPermission(Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED){
-                                //SHOW EXPLANATION
-                                if (shouldShowRequestPermissionRationale(Manifest.permission.BODY_SENSORS)){
-                                    //Explai to the user why we need to read the contacts
-                                }
-
-                                requestPermissions(new String[] {Manifest.permission.BODY_SENSORS}, 101);
-
-                                //MY_PERMISSIONS_REQUEST_READ_CONTACTS is an app-defined int constant
-
-                                return;
-                            }
-                    }
-        } */
-    }
-
-    public void OnIniciar(View view){
-        //  if(btn_start !=null){
-
-        // btn_start.setOnClickListener(new View.OnClickListener() {
-
-        //   @Override
-        //   public void onClick(View v) {
-
-       btn_start.setSelected(!btn_start.isSelected());
-
-
-        // String name = sdcard+"/dadosSENSOR.txt";
-        //namefile = new File(name);
-        //  try {
-        //      out = new BufferedWriter(new FileWriter(namefile));
-        //     } catch (IOException e) {
-        //      e.printStackTrace();
-        //   }
-
-
-
-
-        try{
-            if(!btn_start.isSelected()){
-                //HRM OFF
-                //btn_start.setText(btn_start.getTextOff());
-                btn_start.setText("Iniciar");
-                mSSensorManager.unregisterListener(mSSListenerIR, ir);
-                mSSensorManager.unregisterListener(mSSListenerRED, red);
-
-                // Arquivo.WriteWord("Teste:"+sbDadosSensor);
-                //Arquivo.CloseFile();
-
-                String type="pontuar";
-                BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-                backgroundWorker.execute(type, id);
-
-                Intent openDicas = new Intent(this, Dicas.class);
-                openDicas.putExtra("EXTRA_SESSION_ID", id);
-                startActivity(openDicas);
-
-
-            }else{
-
-
-
-                mSsensorExtension = new SsensorExtension();
-
-                try{
-                    mSsensorExtension.initialize(mContext);
-                    mSSensorManager = new SsensorManager(mContext, mSsensorExtension);
-
-                    ir = mSSensorManager.getDefaultSensor(Ssensor.TYPE_HRM_LED_IR);
-                    red = mSSensorManager.getDefaultSensor(Ssensor.TYPE_HRM_LED_RED);
-
-                }catch(SsdkUnsupportedException e){
-                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
-                    mContext.finish();
-
-                }catch (IllegalArgumentException e){
-                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    mContext.finish();
-                }catch (SecurityException e){
-                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    mContext.finish();
-                }
-
-                //HRM ON
-
-                //btn_start.setText(btn_start.getTextOn());
-                btn_start.setText("Parar");
-
-                //INSERIR PONTOS
-
-
-
-                if(mSSensorManager != null){
-
-                    mSSensorManager.registerListener(mSSListenerIR, ir, SensorManager.SENSOR_DELAY_NORMAL);
-                    mSSensorManager.registerListener(mSSListenerRED, red, SensorManager.SENSOR_DELAY_NORMAL);
-                }
-            }
-        }catch (IllegalArgumentException e){
-            ErrorToast(e);
-        }
-        //   }//onClick
-        // });  //setOnClick
 
         if (android.os.Build.VERSION.SDK_INT >=23){
             if(checkSelfPermission(Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED){
@@ -280,53 +114,197 @@ public class SsensorHealthActivity extends Activity {
                 return;
             }
         }
+
+    }
+
+    public void OnIniciar(View view){
+
+
+       btn_start.setSelected(!btn_start.isSelected());
+
+
+       /* if (android.os.Build.VERSION.SDK_INT >=23){
+            if(checkSelfPermission(Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED){
+                //SHOW EXPLANATION
+                if (shouldShowRequestPermissionRationale(Manifest.permission.BODY_SENSORS)){
+                    //Explai to the user why we need to read the contacts
+                }
+
+                requestPermissions(new String[] {Manifest.permission.BODY_SENSORS}, 101);
+
+                //MY_PERMISSIONS_REQUEST_READ_CONTACTS is an app-defined int constant
+
+                return;
+            }
+        }*/
+
+
+        try{
+            if(!btn_start.isSelected()){
+                //HRM OFF
+                btn_start.setText("Start");
+              //  mSSensorManager.unregisterListener(mSSListenerIR, ir);
+                mSSensorManager.unregisterListener(mSSListenerRED, red);
+               // imageView2.setVisibility(View.INVISIBLE);
+                // Arquivo.WriteWord("Teste:"+sbDadosSensor);
+                //Arquivo.CloseFile();
+
+
+
+
+            }else{
+                imageView2.setVisibility(View.VISIBLE);
+                mSsensorExtension = new SsensorExtension();
+
+                try{
+                    mSsensorExtension.initialize(mContext);
+                    mSSensorManager = new SsensorManager(mContext, mSsensorExtension);
+
+                    ir = mSSensorManager.getDefaultSensor(Ssensor.TYPE_HRM_LED_IR);
+                    red = mSSensorManager.getDefaultSensor(Ssensor.TYPE_HRM_LED_RED);
+
+                }catch(SsdkUnsupportedException e){
+                   // Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
+                    mContext.finish();
+
+                }catch (IllegalArgumentException e){
+                  //  Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    mContext.finish();
+                }catch (SecurityException e){
+                  //  Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    mContext.finish();
+                }
+
+                btn_start.setText("Stop");
+                btn_start.setVisibility(View.INVISIBLE);
+
+                new CountDownTimer(20000,1000){
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        if(mAllowVibrate){
+                            v.vibrate(50);
+                        }
+                        tRED.setText("Seconds remaining: "+millisUntilFinished/1000);
+                        //System.out.println("Seconds remaining: "+millisUntilFinished/1000);
+                    }
+
+                    @TargetApi(Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onFinish() {
+                        //System.out.println("Exibir BPM");
+                       // mSSensorManager.cancelTriggerSensor(mSSensorManager.,red);
+                        //mSSensorManager.unregisterListener(mSSListenerRED, red);
+                        if(mAllowCalculating) {
+                            String type = "pontuar";
+                            BackgroundWorker backgroundWorker = new BackgroundWorker(mContext);
+                            backgroundWorker.execute(type, id);
+
+                            Arquivo.WriteWord("" + sbDadosSensor);
+                            Arquivo.CloseFile();
+
+                            funcoes = new Funcoes();
+                            funcoes.process(0.75, 99.0);
+
+                            List<Double> bpm = funcoes.getBpm();
+                            Long roundedBpm = Math.round(bpm.get(0));
+                            tRED.setText(roundedBpm.toString());
+
+
+                            new CountDownTimer(3000,1000){
+
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                       Intent openCongrats = new Intent(mContext,  Congratulation.class);
+                                       openCongrats.putExtra("EXTRA_SESSION_ID", id);
+                                       startActivity(openCongrats);
+                                }
+                            }.start();
+
+
+                        }
+
+
+
+                        //Arquivo.WriteWord(""+sbDadosSensor);
+                       // Arquivo.CloseFile();
+
+
+
+
+                    }
+                }.start();
+
+
+
+                if(mSSensorManager != null){
+
+                    //mSSensorManager.registerListener(mSSListenerIR, ir, SensorManager.SENSOR_DELAY_NORMAL);
+                    mSSensorManager.registerListener(mSSListenerRED, red, SensorManager.SENSOR_DELAY_NORMAL);
+                }
+            }
+
+        }catch (IllegalArgumentException e){
+            //ErrorToast(e);
+        }
+
+
         //}
     }
 
     public void ErrorToast(IllegalArgumentException e){
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onRestart(){
         super.onRestart();
         btn_start.setSelected(!btn_start.isSelected());
-        // btn_start.setText(btn_start.getTextOff());
-        btn_start.setText("Iniciar");
+        btn_start.setText("Start");
+        mAllowVibrate = true;
+        mAllowCalculating = true;
+        v.cancel();
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mAllowVibrate = true;
+        mAllowCalculating = true;
+    }
+
+
+
+
 
     @Override
     protected  void onPause(){
         super.onPause();
 
+        mAllowVibrate = false;
+        mAllowCalculating = false;
+        //v.cancel();
         Arquivo.WriteWord(""+sbDadosSensor);
         Arquivo.CloseFile();
 
-
-
-        btn_start.setText("Iniciar");
-/*
-        String fileAddress = sdcard+"/dadosSENSOR.txt";
-        Funcoes funcoes = new Funcoes();
-        funcoes.getData(fileAddress);
-
-            funcoes.setSensorValuesList(new ArrayList<String>( funcoes.getSensorValuesList().subList(900, 3500)));
-
-            funcoes.rolling_mean(funcoes.getSensorValuesList(), 0.75, 99.00);
-             funcoes.detect_peaks(funcoes.getSensorValuesList());
-             funcoes.calc_rr(99.00);
-             funcoes.calc_bpm();
-
-*/
+        //btn_start.setVisibility(View.VISIBLE);
+        btn_start.setText("Start");
 
 
         try{
 
-            if(ir != null){
-                mSSensorManager.unregisterListener(mSSListenerIR, ir);
-                tIR.setText("");
+          //  if(ir != null){
+              //  mSSensorManager.unregisterListener(mSSListenerIR, ir);
+                //tIR.setText("");
 
-            }
+         //   }
 
             if(red !=null){
                 mSSensorManager.unregisterListener(mSSListenerRED, red);
@@ -334,24 +312,24 @@ public class SsensorHealthActivity extends Activity {
 
             }
         }catch (IllegalArgumentException e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        //    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             this.finish();
         }catch (IllegalStateException e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        //    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             this.finish();
         }
     }
 
 
-    private  class SSListenerIR implements SsensorEventListener{
+  //  private  class SSListenerIR implements SsensorEventListener{
 
-        @Override
-        public void OnAccuracyChanged(Ssensor arg0, int arg1){
+ //       @Override
+   //     public void OnAccuracyChanged(Ssensor arg0, int arg1){
             //TODO
-        }
+  //      }
 
-        @Override
-        public void OnSensorChanged(SsensorEvent event){
+     //   @Override
+     //   public void OnSensorChanged(SsensorEvent event){
 
             //    Ssensor sIR = event.sensor;
             //   StringBuffer sb = new StringBuffer();
@@ -363,8 +341,8 @@ public class SsensorHealthActivity extends Activity {
 
             // tIR.setText(sb.toString());
 
-        }
-    }
+   //     }
+  //  }
 
 
     private class SSListenerRED implements SsensorEventListener{
@@ -376,6 +354,8 @@ public class SsensorHealthActivity extends Activity {
 
         }
 
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void OnSensorChanged(SsensorEvent event){
 
@@ -398,12 +378,16 @@ public class SsensorHealthActivity extends Activity {
 
             sb.append("RED LED RAW DATA(HRM): "+event.values[0]+ "\n");
 
-            tRED.setText(sb.toString());
+            //tRED.setText(sb.toString());
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             String date = df.format(Calendar.getInstance().getTime());
             // Date date = new Date();
             sbDadosSensor.append(sIr.getName()+","+event.values[0]+","+date+"\n");
+
+           //Arquivo.WriteWord(""+sbDadosSensor);
+
+            //funcoes.process(0.75,99.0); NaN
 
 
             //  try {

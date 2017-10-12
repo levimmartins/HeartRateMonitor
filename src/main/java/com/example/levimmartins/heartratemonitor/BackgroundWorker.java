@@ -297,7 +297,7 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
 
         if(result.equals("pontuado")){
 
-            Toast.makeText(this.context, "Congratulation, you received +30 points!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this.context, "Congratulation, you received +30 points!", Toast.LENGTH_LONG).show();
 
         }
 

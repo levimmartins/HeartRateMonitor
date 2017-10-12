@@ -32,7 +32,7 @@ public class Conquistas extends AppCompatActivity {
             //pontos = backgroundWorker.getGlobalPontos().toString();
            //
         //
-             tvPontos.setText("Pontos: "+pontos);
+             tvPontos.setText("Points: "+pontos);
              if(Integer.parseInt(pontos) >= 100){
                  tvLevel.setText("Level: 2");
              }

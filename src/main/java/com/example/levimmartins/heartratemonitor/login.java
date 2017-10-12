@@ -42,8 +42,8 @@ public class login extends AppCompatActivity {
     }
 
     public void OnLogin(View view){
-        String username = EdUsuario.getText().toString();
-        String password = EdSenha.getText().toString();
+        String username = EdUsuario.getText().toString().trim();
+        String password = EdSenha.getText().toString().trim();
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

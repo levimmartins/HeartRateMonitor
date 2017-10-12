@@ -46,6 +46,8 @@ public class WriteFile {
         System.out.println("Done");
     }
 
+
+
     public void CloseFile(){
         try{
             bw.close();
