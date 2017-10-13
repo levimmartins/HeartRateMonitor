@@ -37,6 +37,7 @@
         </activity>
         <activity android:name=".DicasPop" />
         <activity android:name=".Congratulation"></activity>
+        <activity android:name=".CongratulationTips"></activity>
     </application>
 
 </manifest>

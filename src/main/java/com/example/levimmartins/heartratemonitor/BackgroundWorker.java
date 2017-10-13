@@ -34,8 +34,8 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
     String globalPontos;
 
 
-    String dica = null;
-
+    String dica = "";
+    String idDica = "";
 
     public String getGlobal_user() {
         return global_user;
@@ -66,8 +66,9 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
         void processFinish(String output);
     }
 
-    public AsyncResponse delegate = null;
 
+
+    public AsyncResponse delegate = null;
 
       BackgroundWorker (Context ctx){
         context = ctx;
@@ -81,6 +82,7 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
         String pontos_url = "http://192.168.0.3/HRM/pontos.php" ;
         String pontuar_url = "http://192.168.0.3/HRM/pontuarHRM.php";
         String lerDica_url = "http://192.168.0.3/HRM/lerDica.php";
+        String setDica_url = "http://192.168.0.3/HRM/setDica.php";
 
         if(type.equals("login")){
             try {
@@ -300,7 +302,8 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
                             //String dicas = jObj.getJSONArray("dica").toString();this.setDica(dicas);
                             //this.setDica(jObj.getString("dica"));
                             this.dica = new String(jObj.getString("dica"));
-                            //params[3] = params[3].concat(dica);
+                            this.dica = "Tip:"+this.dica;//params[3] = params[3].concat(dica);
+
 
                         }catch(JSONException e){
                             e.printStackTrace();
@@ -318,12 +321,63 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
                     } catch (IOException e) {
                         e.printStackTrace();
                 }
+        }else if(type.equals("SetIdDica")) {
+            try {
+
+                String user_name = params[1];
+
+
+                URL url = new URL(setDica_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "ISO-8859-15"));
+                String result = "";
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+
+
+
+                try {
+                    JSONObject  jObj = new JSONObject(result);
+
+
+                    this.idDica= new String(jObj.getString("total"));
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+
+
+                result = "idRetornado";
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
         }
-
-
-
-
-
 
 
         return null;
@@ -383,10 +437,19 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
             Toast.makeText(this.context, "BACKGROUND PONTUAR TODO", Toast.LENGTH_LONG).show();
         }
 
-        if(result.equals("dicaRecebida")){
 
+        if(result.equals("idRetornado")){
+            delegate.processFinish(this.idDica);
+            //delegate = null;
+
+        }
+
+        if(result.equals("dicaRecebida")){
+            //delegate = null;
             delegate.processFinish(this.dica);
         }
+
+
 
 
 
