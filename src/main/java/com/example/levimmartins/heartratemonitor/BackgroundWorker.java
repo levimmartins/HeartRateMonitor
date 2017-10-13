@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -30,6 +33,10 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
     String global_user;
     String globalPontos;
 
+
+    String dica = null;
+
+
     public String getGlobal_user() {
         return global_user;
     }
@@ -46,9 +53,23 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
         this.globalPontos = globalPontos;
     }
 
+    public String getDica() {
+        return dica;
+    }
+
+    public void setDica(String dica) {
+        this.dica = dica;
+    }
 
 
-    BackgroundWorker (Context ctx){
+    public interface AsyncResponse {
+        void processFinish(String output);
+    }
+
+    public AsyncResponse delegate = null;
+
+
+      BackgroundWorker (Context ctx){
         context = ctx;
     }
 
@@ -59,6 +80,7 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
         String cadastrar_url = "http://192.168.0.3/HRM/cadastrar.php";
         String pontos_url = "http://192.168.0.3/HRM/pontos.php" ;
         String pontuar_url = "http://192.168.0.3/HRM/pontuarHRM.php";
+        String lerDica_url = "http://192.168.0.3/HRM/lerDica.php";
 
         if(type.equals("login")){
             try {
@@ -194,6 +216,7 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
             try {
 
                 String user_name = params[1];
+                String bpm = params[2];
 
                 URL url = new URL(pontuar_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -203,7 +226,7 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
 
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data =URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8");
+                String post_data =URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8")+"&"+URLEncoder.encode("bpm", "UTF-8")+"="+URLEncoder.encode(bpm,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -230,6 +253,71 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
                 e.printStackTrace();
             }
 
+        }else if(type.equals("lerDica")){
+                try{
+
+
+                        String user_name = params[1];
+                        String idDica = params[2];
+
+
+                        URL url = new URL(lerDica_url);
+                        HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                        httpURLConnection.setRequestMethod("POST");
+                        httpURLConnection.setDoOutput(true);
+                        httpURLConnection.setDoInput(true);
+
+                        OutputStream outputStream = httpURLConnection.getOutputStream();
+                        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                        String post_data =URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8")+"&"+URLEncoder.encode("idDicas","UTF-8")+"="+URLEncoder.encode(idDica,"UTF-8");
+                        bufferedWriter.write(post_data);
+                        bufferedWriter.flush();
+                        bufferedWriter.close();
+                        outputStream.close();
+
+
+                        InputStream inputStream = httpURLConnection.getInputStream();
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "ISO-8859-15"));
+                        String result = "";
+                        String line;
+
+                        while((line = bufferedReader.readLine() )!= null){
+                            result+=line;
+                        }
+
+                       // this.setDica(result);
+
+                        //JSONParser jParser = new JSONParser();
+                        //List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+
+
+                        try {
+                            JSONObject  jObj = new JSONObject(result);
+
+                           // System.out.println(jObj.toString());
+                           // System.out.println(jObj.get("dica"));
+
+                            //String dicas = jObj.getJSONArray("dica").toString();this.setDica(dicas);
+                            //this.setDica(jObj.getString("dica"));
+                            this.dica = new String(jObj.getString("dica"));
+                            //params[3] = params[3].concat(dica);
+
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
+
+                        result = "dicaRecebida";
+                        //System.out.println(dica);
+                        bufferedReader.close();
+                        inputStream.close();
+                        httpURLConnection.disconnect();
+
+                        return result;
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                }
         }
 
 
@@ -295,16 +383,17 @@ public class BackgroundWorker extends  AsyncTask <String, Void, String>  {
             Toast.makeText(this.context, "BACKGROUND PONTUAR TODO", Toast.LENGTH_LONG).show();
         }
 
-        if(result.equals("pontuado")){
+        if(result.equals("dicaRecebida")){
 
-            //Toast.makeText(this.context, "Congratulation, you received +30 points!", Toast.LENGTH_LONG).show();
-
+            delegate.processFinish(this.dica);
         }
 
 
 
 
     }
+
+
 
     @Override
     protected void onProgressUpdate(Void... values) {
