@@ -112,6 +112,7 @@
     <orderEntry type="library" exported="" name="design-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="ssensorextensionsdk-v1.1.6" level="project" />
+    <orderEntry type="library" exported="" name="httpclient-4.5.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="jsr305-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-fragment-25.3.1" level="project" />
@@ -119,7 +120,9 @@
     <orderEntry type="library" exported="" scope="TEST" name="exposed-instrumentation-api-publish-0.5" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="rules-0.5" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="javax.annotation-api-1.2" level="project" />
+    <orderEntry type="library" exported="" name="json-lib-2.4-jdk15" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="httpcore-4.4.6" level="project" />
     <orderEntry type="library" exported="" name="okio-1.11.0" level="project" />
     <orderEntry type="library" exported="" name="okhttp-3.6.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="javawriter-2.1.1" level="project" />
