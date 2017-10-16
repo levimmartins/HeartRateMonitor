@@ -15,7 +15,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Dicas e Motivações"
+        android:text="Health Tips"
         android:textColor="@android:color/background_dark"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"

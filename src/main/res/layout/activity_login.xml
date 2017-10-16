@@ -7,11 +7,12 @@
     android:gravity="center">
 
     <TextView
+        android:id="@+id/tvUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvUsuario"
         android:layout_weight="0.02"
         android:text="@string/usuario"
+        android:textColor="@android:color/background_dark"
         android:textSize="24sp" />
 
     <EditText
@@ -19,15 +20,16 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:hint="Digite seu email "
+        android:hint="Type your email."
         android:id="@+id/edUsuario"
         android:textAlignment="center"/>
 
     <TextView
+        android:id="@+id/tvSenha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvSenha"
         android:text="@string/senha"
+        android:textColor="@android:color/background_dark"
         android:textSize="24sp" />
 
     <EditText
@@ -36,26 +38,25 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/edSenha"
-        android:hint="Digite sua senha"
+        android:hint="Type your password"
         android:layout_weight="0.02"
         android:textAlignment="center" />
 
     <Button
-        android:text="@string/login"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
         android:id="@+id/btnEntrar"
-        android:layout_weight="0.05"
+        android:layout_width="186dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:onClick="OnLogin"
-        />
+        android:text="@string/login"
+        android:textSize="24sp" />
 
     <TextView
-        android:text="Não tem uma conta? Crie uma!"
+        android:id="@+id/tvNaoPossuiCd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvNaoPossuiCd"
-        android:textSize="22sp"
         android:layout_gravity="center"
-        android:layout_marginTop="18dp"/>
+        android:layout_marginTop="18dp"
+        android:text="Sign Up."
+        android:textSize="22sp" />
 </LinearLayout>
