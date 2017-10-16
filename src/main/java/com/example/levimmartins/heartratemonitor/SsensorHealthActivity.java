@@ -214,7 +214,7 @@ public class SsensorHealthActivity extends Activity {
 
                             List<Double> bpm = funcoes.getBpm();
                             Long roundedBpm = Math.round(bpm.get(0));
-                            tRED.setText(roundedBpm.toString());
+                            tRED.setText(roundedBpm.toString()+" bpm");
 
                             String type = "pontuar";
                             BackgroundWorker backgroundWorker = new BackgroundWorker(mContext);

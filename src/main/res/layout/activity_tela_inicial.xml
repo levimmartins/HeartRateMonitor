@@ -59,8 +59,8 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="151dp"
-        android:layout_height="19dp"
+        android:layout_width="156dp"
+        android:layout_height="41dp"
         android:layout_marginBottom="50dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
@@ -69,11 +69,11 @@
         android:textColor="@android:color/background_dark"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.44" />
+        app:layout_constraintVertical_bias="0.463" />
 
     <TextView
         android:id="@+id/textView5"
